@@ -1,0 +1,109 @@
+@import url(https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900);
+@import url(https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700);
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    background-color: #121212;
+    font-family: "Roboto Condensed", Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+.todo-list {
+    width: 100%;
+    max-width: 600px;
+}
+
+.todo-list header {
+    text-align: center;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    padding: 15px;
+    background-color: #4f3fde;
+    color: #fff;
+    font-size: 1.3em;
+}
+
+.wrapper-list ul.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper-list ul.list li {
+    position: relative;
+    background-color: #262e4c;
+    border-bottom: 1px solid #1c2340;
+    color: #b1b2c9;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    transition: background-color 200ms ease;
+}
+
+.wrapper-list ul.list li:hover {
+    background-color: #323b5c;
+}
+
+.wrapper-list ul.list li:hover button.remove {
+    opacity: 1;
+}
+
+.wrapper-list ul.list .check {
+    background-color: #404a6e;
+    border-radius: 50%;
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin-right: 20px;
+    cursor: pointer;
+    transition: background-color 200ms ease;
+}
+
+.wrapper-list ul.list .check:hover {
+    background-color: #171d37;
+}
+
+.wrapper-list button.remove {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    border: none;
+    outline: none;
+    background-color: red;
+    border-radius: 100%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 200ms ease;
+}
+
+.wrapper-list button.remove:after {
+    content: 'X';
+    color: white;
+    display: block;
+}
+
+.todo-list footer {
+    background-color: #171d37;
+}
+
+.todo-list footer input {
+    background-color: #171d37;
+    border: none;
+    outline: none;
+    width: 90%;
+    padding: 20px;
+    font-family: "Roboto Condensed", Arial, Helvetica, sans-serif;
+    font-size: 1.2em;
+    color: white;
+}
