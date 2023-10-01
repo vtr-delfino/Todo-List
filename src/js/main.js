@@ -17,8 +17,15 @@ const Main = {
     },
 
     Events: {
-        checkButton_click: function() {
-            alert("ok")
+        checkButton_click: function(e) {
+            const $li = e.target.parentElement
+            const isDOne = $li.classList.contains('done')
+
+            if(!isDOne){
+                
+                return $li.classList.add('done')
+            } 
+            $li.classList.remove('done')
         }
     }
 }
