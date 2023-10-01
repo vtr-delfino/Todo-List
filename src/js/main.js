@@ -33,7 +33,11 @@ const Main = {
     getStoraged: function() {
         const tasks = localStorage.getItem('tasks')
 
-        this.tasks = JSON.parse(tasks)
+        if (tasks) {
+            this.tasks = JSON.parse(tasks)
+        } else {
+            localStorage.setItem('tasks', JSON.stringify([]))
+        }
     },
 
     getTaskHtml: function(task) {
@@ -86,12 +90,15 @@ const Main = {
 
                 const savedTasks = localStorage.getItem('tasks')
                 const savedTasksObj = JSON.parse(savedTasks)
-                const obj = [
-                    { task: value },
+                const arrTasks = [
+                    { task: value},
                     ...savedTasksObj,
                 ]
 
-                localStorage.setItem('tasks', JSON.stringify(obj))
+                const jsonTasks = JSON.stringify(arrTasks)
+
+                this.tasks = arrTasks
+                localStorage.setItem('tasks', jsonTasks)
             }
         },
 
@@ -106,6 +113,7 @@ const Main = {
             console.log(newTasksState)
 
             localStorage.setItem('tasks', JSON.stringify(newTasksState))
+            this.tasks = newTasksState
 
             $li.classList.add('removed')
 
