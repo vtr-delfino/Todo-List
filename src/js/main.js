@@ -8,6 +8,7 @@ const Main = {
         this.$checkButtons = document.querySelectorAll('.check')
         this.$inputTask = document.querySelector('#inputTask')
         this.$list = document.querySelector('#list')
+        this.$removeButtons = document.querySelectorAll('.remove')
     },
 
     bindEvents: function() {
@@ -18,6 +19,10 @@ const Main = {
         })
 
         this.$inputTask.onkeypress = self.Events.inputTask_keyPress.bind(this)
+
+        this.$removeButtons.forEach(button => {
+            button.onclick = self.Events.removeButton_click
+        })
     },
 
     Events: {
@@ -46,7 +51,20 @@ const Main = {
                 `
 
                 e.target.value = ''
+
+                this.cacheSelector()
+                this.bindEvents()
             }
+        },
+
+        removeButton_click: function(e) {
+            let $li = e.target.parentElement
+
+            $li.classList.add('removed')
+
+            setTimeout(() => {
+                $li.classList.add('hidden')
+            }, 300)
         }
     }
 }
