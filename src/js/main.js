@@ -72,6 +72,7 @@ const Main = {
     Events: {
         checkButton_click: function(e) {
             const $li = e.target.parentElement
+            const value = e.target.dataset['task']
             const isDOne = $li.classList.contains('done')
             const self = this
 
@@ -79,13 +80,36 @@ const Main = {
 
             if(!isDOne){
                 $li.classList.add('done')
-                self.tasks.forEach(task => {
-                    console.log(task)
+                self.tasks.forEach(item => {
+                    if(value === item.task) {
+                        console.log(value)
+                        console.log(item.task)
+                        item.isDone = true
+
+                        console.log(self.tasks)
+
+                        localStorage.setItem('tasks', JSON.stringify(self.tasks))
+
+                        return
+                    }
                 })
 
                 return 
             } 
             $li.classList.remove('done')
+            self.tasks.forEach(item => {
+                if(value === item.task) {
+                    console.log(value)
+                    console.log(item.task)
+                    item.isDone = false
+
+                    console.log(self.tasks)
+
+                    localStorage.setItem('tasks', JSON.stringify(self.tasks))
+
+                    return
+                }
+            })
         },
 
         inputTask_keyPress: function(e) {
