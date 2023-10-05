@@ -46,11 +46,16 @@ const Main = {
         }
         
         return `
-            <li class="${done}">
-                <div class="check" data-task="${task}"></div>
-                <label class="task">${task}</label>
-                <button class="remove" data-task="${task}"></button>
-            </li>
+            <div>
+                <li class="${done}">
+                    <div class="check" data-task="${task}"></div>
+                    <label class="task">${task}</label>
+                    <button class="remove" data-task="${task}"></button>
+                </li>
+                <div class="task-description">
+                    <textarea class="task-description-input scroll-hide" placeholder="Descrição da tarefa..." rows="3" wrap>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Blanditiis, explicabo? Odit soluta hic quis voluptate, commodi nobis tempora doloribus illo nesciunt optio quo ipsum iure veniam quos totam odio velit.</textarea>
+                </div>
+            </div>
         `
     },
 
