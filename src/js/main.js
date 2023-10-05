@@ -6,8 +6,6 @@ const Main = {
         this.bindEvents()
         this.getStoraged()
         this.buildTasks()
-
-        console.log(this.tasks)
     },
 
     cacheSelector: function() {
@@ -56,7 +54,7 @@ const Main = {
         `
     },
 
-    buildTasks: function(){
+    buildTasks: function() {
         let html = ''
         
         this.tasks.forEach(item => {
@@ -73,43 +71,24 @@ const Main = {
         checkButton_click: function(e) {
             const $li = e.target.parentElement
             const value = e.target.dataset['task']
-            const isDOne = $li.classList.contains('done')
+            const isDone = $li.classList.contains('done')
             const self = this
 
-            console.log(self)
-
-            if(!isDOne){
-                $li.classList.add('done')
-                self.tasks.forEach(item => {
-                    if(value === item.task) {
-                        console.log(value)
-                        console.log(item.task)
-                        item.isDone = true
-
-                        console.log(self.tasks)
-
-                        localStorage.setItem('tasks', JSON.stringify(self.tasks))
-
-                        return
-                    }
-                })
-
-                return 
-            } 
-            $li.classList.remove('done')
             self.tasks.forEach(item => {
                 if(value === item.task) {
-                    console.log(value)
-                    console.log(item.task)
-                    item.isDone = false
-
-                    console.log(self.tasks)
-
+                    item.isDone = !isDone
                     localStorage.setItem('tasks', JSON.stringify(self.tasks))
 
                     return
                 }
             })
+            
+            if(!isDone) {
+                $li.classList.add('done')
+
+                return 
+            } 
+            $li.classList.remove('done')
         },
 
         inputTask_keyPress: function(e) {
