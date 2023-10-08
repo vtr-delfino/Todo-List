@@ -52,16 +52,16 @@ body {
     transition: background-color 200ms ease;
 }
 
-.wrapper-list ul.list li.removed {
+.wrapper-list ul.list div.removed {
     animation: collapseItem 300ms ease;
 }
 
-.wrapper-list ul.list li.hidden {
+.wrapper-list ul.list div.hidden { 
     display: none;
 }
 
 .wrapper-list ul.list li:hover,
-ul.list li:hover + .task-description {
+ul.list li:hover + .task-description-div {
     background-color: #323b5c;
 }
 
@@ -122,14 +122,14 @@ ul.list li:hover + .task-description {
     display: block;
 }
 
-.wrapper-list ul.list .task-description {
+.wrapper-list ul.list .task-description-div {
     background-color: var(--task-background-color);
     border-bottom: 1px solid #1c2340;
     padding: 5px 10px 10px 10px;
     transition: background-color 200ms ease;
 }
 
-.wrapper-list ul.list .task-description-input {
+.wrapper-list ul.list .task-description {
     resize: none;
     background-color: transparent;
     border: none;
@@ -139,6 +139,7 @@ ul.list li:hover + .task-description {
     outline: none;
     font-size: 12px;
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    transition: background-color 200ms ease;
 }
 
 .todo-list footer {

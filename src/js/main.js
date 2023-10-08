@@ -9,23 +9,28 @@ const Main = {
     },
 
     cacheSelector: function() {
-        this.$checkButtons = document.querySelectorAll('.check')
-        this.$inputTask = document.querySelector('#inputTask')
         this.$list = document.querySelector('#list')
+        this.$inputTask = document.querySelector('#inputTask')
+        this.$checkButtons = document.querySelectorAll('.check')
         this.$removeButtons = document.querySelectorAll('.remove')
+        this.$taskDescription = document.querySelectorAll('.task-description')
     },
 
     bindEvents: function() {
         const self = this
+
+        this.$inputTask.onkeypress = self.Events.inputTask_keyPress.bind(this)
         
         this.$checkButtons.forEach(button => {
             button.onclick = self.Events.checkButton_click.bind(self)
         })
 
-        this.$inputTask.onkeypress = self.Events.inputTask_keyPress.bind(this)
-
         this.$removeButtons.forEach(button => {
             button.onclick = self.Events.removeButton_click.bind(self)
+        })
+
+        this.$taskDescription.forEach(textarea => {
+            textarea.onblur = self.Events.taskDescription_blur.bind(self)
         })
     },
 
@@ -39,10 +44,12 @@ const Main = {
         }
     },
 
-    getTaskHtml: function(task, isDone) {
+    getTaskHtml: function(task, isDone, description) {
         let done = 'done'
+        let disabled = 'disabled'
         if(!isDone){
             done = ''
+            disabled = ''
         }
         
         return `
@@ -52,8 +59,8 @@ const Main = {
                     <label class="task">${task}</label>
                     <button class="remove" data-task="${task}"></button>
                 </li>
-                <div class="task-description">
-                    <textarea class="task-description-input scroll-hide" placeholder="Descrição da tarefa..." rows="3" wrap>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Blanditiis, explicabo? Odit soluta hic quis voluptate, commodi nobis tempora doloribus illo nesciunt optio quo ipsum iure veniam quos totam odio velit.</textarea>
+                <div class="task-description-div">
+                    <textarea class="task-description scroll-hide" placeholder="Descrição da tarefa..." rows="3" wrap data-task="${task}" ${disabled}>${description}</textarea>
                 </div>
             </div>
         `
@@ -63,7 +70,7 @@ const Main = {
         let html = ''
         
         this.tasks.forEach(item => {
-            html += this.getTaskHtml(item.task, item.isDone)
+            html += this.getTaskHtml(item.task, item.isDone, item.description)
         })
 
         this.$list.innerHTML = html
@@ -73,8 +80,35 @@ const Main = {
     },
 
     Events: {
+        inputTask_keyPress: function(e) {
+            const key = e.key
+            const value = e.target.value
+
+            if(key === 'Enter'){
+                this.$list.innerHTML += this.getTaskHtml(value, false, '')
+
+                e.target.value = ''
+
+                this.cacheSelector()
+                this.bindEvents()
+
+                const savedTasks = localStorage.getItem('tasks')
+                const savedTasksArr = JSON.parse(savedTasks)
+                const arrTasks = [
+                    { task: value, isDone: false, description: ''},
+                    ...savedTasksArr
+                ]
+
+                const jsonTasks = JSON.stringify(arrTasks)
+
+                this.tasks = arrTasks
+                localStorage.setItem('tasks', jsonTasks)
+            }
+        },
+        
         checkButton_click: function(e) {
             const $li = e.target.parentElement
+            const $textarea = $li.nextElementSibling.firstElementChild
             const value = e.target.dataset['task']
             const isDone = $li.classList.contains('done')
             const self = this
@@ -90,40 +124,16 @@ const Main = {
             
             if(!isDone) {
                 $li.classList.add('done')
+                $textarea.setAttribute('disabled', true)
 
                 return 
             } 
             $li.classList.remove('done')
-        },
-
-        inputTask_keyPress: function(e) {
-            const key = e.key
-            const value = e.target.value
-
-            if(key === 'Enter'){
-                this.$list.innerHTML += this.getTaskHtml(value)
-
-                e.target.value = ''
-
-                this.cacheSelector()
-                this.bindEvents()
-
-                const savedTasks = localStorage.getItem('tasks')
-                const savedTasksArr = JSON.parse(savedTasks)
-                const arrTasks = [
-                    { task: value, isDone: false},
-                    ...savedTasksArr
-                ]
-
-                const jsonTasks = JSON.stringify(arrTasks)
-
-                this.tasks = arrTasks
-                localStorage.setItem('tasks', jsonTasks)
-            }
+            $textarea.removeAttribute('disabled')
         },
 
         removeButton_click: function(e) {
-            const $li = e.target.parentElement
+            const $li = e.target.parentElement.parentElement
             const value = e.target.dataset['task']
             const newTasksState = this.tasks.filter(item => item.task !== value)
 
@@ -135,6 +145,20 @@ const Main = {
             setTimeout(() => {
                 $li.classList.add('hidden')
             }, 300)
+        },
+
+        taskDescription_blur: function(e) {
+            const value = e.target.value
+            const task = e.target.dataset['task']
+
+            this.tasks.forEach(item => {
+                if(task === item.task) {
+                    item.description = value
+                    localStorage.setItem('tasks', JSON.stringify(this.tasks))
+
+                    return
+                }
+            })
         }
     }
 }
